@@ -1,0 +1,5 @@
+module.exports = {
+    ITEM_INVENTORY_OPERATION: 'operation',
+    ITEM_INVENTORY_OPERATION_GO_IN: 'goIn',
+    ITEM_INVENTORY_OPERATION_COME_OUT: 'comeOut'
+}
