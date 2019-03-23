@@ -26,6 +26,11 @@ class ItemService{
 
     static async updateItem(item) {
         try {
+            const existingItem = await Item.findOne({name: item.name});
+            if(!_.isNil(existingItem) && existingItem._id.toString() !== item._id) {
+                throw new DuplicateObjectError('An item with the same name exist');
+            }
+                
             const updatedItem = await Item.findByIdAndUpdate(item._id, item).exec();
             this.validateItemExitence(updatedItem);
             return item;
@@ -33,10 +38,18 @@ class ItemService{
             throw e;
         }
     }
-
+    static  async getItemById(_id) {
+        try {
+            const items = await this.getItems({_id});
+            this.validateItemExitence(items.length> 0? items[0]: null);
+            return items[0];
+        } catch (e) {
+        
+        }
+    }
     static async getItems(item = {}) {
         try {
-            return Item.find(item).exec();
+            return Item.find(item).sort({createdAt: -1}).exec();
         } catch (e) {
             throw e;
         }

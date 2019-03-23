@@ -1,11 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const {BaseError} = require('./utils/errors');
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
+app.use(cors());
 // Initialize Database
 require('./db/index');
 

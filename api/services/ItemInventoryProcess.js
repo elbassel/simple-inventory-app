@@ -21,7 +21,7 @@ class ItemInventoryProcess {
             ItemService.validateItemExitence(existingItem);
             existingItem.quantity -= comeOutQuantity;
             if (existingItem.quantity < 0) {
-                throw new BusinessValidationError('Quantity can\'t be less than zero');
+                throw new BusinessValidationError('If this quantity comes out, item quantity will be less than zero');
             }
             const item = await Item.findByIdAndUpdate(itemId, { $inc : { quantity: -comeOutQuantity } }, {new: true}) ;
 

@@ -4,8 +4,8 @@ const CREATE_ITEM_SCHEME = {
     type: 'object',
     properties: {
         _id: {type: 'string', pattern: '^[0-9a-fA-F]{24}$'},
-        name: {type: 'string'},
-        sku: { type: 'string' },
+        name: {type: 'string', minLength: 3},
+        sku: { type: 'string', minLength: 3},
         code: {type: 'string'},
         quantity: { type: 'number', minimum: 0,  }
     },

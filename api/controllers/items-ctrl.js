@@ -46,6 +46,16 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.get('/:id', async (req, res, next) => {
+    try {
+        const items = await ItemService.getItemById(req.params.id);
+        res.send(items);
+    } catch (e) {
+        next(e);
+    }
+});
+
+
 router.put('/:id', async (req, res, next) => {
     try {
         const item = {
