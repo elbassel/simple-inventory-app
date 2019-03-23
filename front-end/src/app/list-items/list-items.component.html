@@ -1,0 +1,30 @@
+<table *ngIf="doesItemsExist">
+  <thead>
+    <tr>
+        <th>Name</th>
+        <th>SKU</th>
+        <th>Code</th>
+        <th>Quantity</th>
+        <th>Edit</th>
+        
+    </tr>
+  </thead>
+  <tbody>
+    <tr  *ngFor="let item of items">
+      <td>{{item.name}}</td>
+      <td>{{item.sku}}</td>
+      <td>{{item.code}}</td>
+      <td>{{item.quantity}}</td>
+      <td>
+        <button class="btn btn-success" (click)="deleteUser(item)"> Delete</button>
+        <button class="btn btn-success" (click)="editItem(item)" style="margin-left: 20px;"> Edit</button>
+        <button class="btn btn-success" (click)="itemsIn(item)" style="margin-left: 20px;"> Items go in</button>
+        <button class="btn btn-success" (click)="itemsOut(item)" style="margin-left: 20px;"> Items comeout</button>
+      </td>
+
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="!doesItemsExist">
+  There is no items, please click Add new Item
+</div>
