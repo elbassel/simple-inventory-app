@@ -11,7 +11,7 @@
 </ul>
 <p>&nbsp;</p>
 <p>Technologies:</p>
-<p>Nodejs, Expressjs, MongoDB, Mongoose, Mocka, Sinon, NYC, Docker, Docker Compose</p>
+<p>Nodejs, Expressjs, MongoDB, Angular, Mongoose, Mocka, Sinon, NYC, Docker, Docker Compose</p>
 <p>&nbsp;</p>
 <p>Before running app, you have to make sure the following ports aren't busy: 27017, 4200, 3000</p>
 <p>To run app:</p>
