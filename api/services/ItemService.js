@@ -26,7 +26,7 @@ class ItemService{
 
     static async updateItem(item) {
         try {
-            const existingItem = await Item.findOne({name: item.name});
+            const existingItem = await Item.findOne({name: item.name}).exec();
             if(!_.isNil(existingItem) && existingItem._id.toString() !== item._id) {
                 throw new DuplicateObjectError('An item with the same name exist');
             }

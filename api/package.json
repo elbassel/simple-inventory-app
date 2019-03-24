@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "nyc --reporter=html --reporter=lcov mocha  --timeout 30000 -R spec ./test/index && exit 0",
+    "test": "export NODE_ENV=test && nyc --reporter=html --reporter=lcov mocha  -R spec ./test/index",
     "start": "node app.js"
   },
   "author": "",

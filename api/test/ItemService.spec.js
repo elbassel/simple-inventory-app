@@ -72,13 +72,15 @@ describe('Should test ItemService', async () => {
     });
 
     describe('Should test updating an item', async () => {
-        let findByIdAndUpdateStub;        
+        let findByIdAndUpdateStub, findOneItemStub;        
         afterEach(()=>{
             findByIdAndUpdateStub.restore();
+            findOneItemStub.restore();
         });
         it('Should update an item', async ()=> {
             try {
                 findByIdAndUpdateStub = sinon.stub(ItemModel, 'findByIdAndUpdate').returns({exec: ()=> DATA.NEW_ITEM});
+                findOneItemStub  = sinon.stub(ItemModel, 'findOne').returns({exec: ()=> null});
                 const udatedItem = await ItemService.updateItem(DATA.NEW_ITEM);
                 expect(udatedItem).to.be.an('object')
             } catch (e) {
@@ -86,9 +88,23 @@ describe('Should test ItemService', async () => {
             }
         });
 
+        it('Should update an item with a name already exist before', async ()=> {
+            try {
+                findByIdAndUpdateStub = sinon.stub(ItemModel, 'findByIdAndUpdate').returns({exec: ()=> DATA.NEW_ITEM});
+                findOneItemStub  = sinon.stub(ItemModel, 'findOne').returns({exec: ()=> {
+                    return {_id: 'fakeId', name: DATA.NEW_ITEM.name}
+                }});
+                const udatedItem = await ItemService.updateItem(DATA.NEW_ITEM);
+                expect(udatedItem).to.be.an('object')
+            } catch (e) {
+                expect(e.httpCode).to.equal(409);
+            }
+        });
+
         it('Should throw not found error when update an item', async ()=> {
             try {
                 findByIdAndUpdateStub = sinon.stub(ItemModel, 'findByIdAndUpdate').returns({exec: ()=> null});
+                findOneItemStub  = sinon.stub(ItemModel, 'findOne').returns({exec: ()=> null});
                 const udatedItem = await ItemService.updateItem(DATA.NEW_ITEM);
             } catch (e) {
                 expect(e.httpCode).to.equal(404);
@@ -111,7 +127,12 @@ describe('Should test ItemService', async () => {
         });
         it('Should get all items', async () => {
             try {
-                findStub = sinon.stub(ItemModel, 'find').returns({exec:() => []});
+                const returns = {
+                    sort: ()=> {
+                        return {exec: ()=> []}
+                    }
+                }
+                findStub = sinon.stub(ItemModel, 'find').returns(returns);
                 const items = await ItemService.getItems();
                 expect(items).to.be.an('array');
             } catch (e) {
@@ -129,4 +150,38 @@ describe('Should test ItemService', async () => {
             }
         })
     });
+
+    describe('Should test get item by id', async () => {
+        afterEach(() =>{
+            findStub.restore();
+        });
+        it('Should test get item by id', async () => {
+            try {
+                const returns = {
+                    sort: ()=> {
+                        return {exec: ()=> [DATA.NEW_ITEM]}
+                    }
+                }
+                findStub = sinon.stub(ItemModel, 'find').returns(returns);
+                const items = await ItemService.getItemById(DATA.NEW_ITEM._id);
+                expect(items).to.be.an('object');
+            } catch (e) {
+                throw e;
+            }
+        })
+
+        it('Should throw not found error', async () => {
+            try {
+                const returns = {
+                    sort: ()=> {
+                        return {exec: ()=> []}
+                    }
+                }
+                findStub = sinon.stub(ItemModel, 'find').returns(returns);
+                const items = await ItemService.getItemById(DATA.NEW_ITEM._id);
+            } catch (e) {
+                expect(e.httpCode).to.equal(404);
+            }
+        })
+    });    
   });

@@ -8,7 +8,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 // Initialize Database
-require('./db/index');
+if( process.env.NODE_ENV !== 'test') {
+    require('./db/index');
+}
+
 
 const itemsCtrl = require('./controllers/items-ctrl')
 
@@ -35,3 +38,5 @@ app.use(function (err, req, res, next) {
 app.listen(3000, () => {
     console.log('Up and running on port 3000\n access: localhost:3000 and localhost:3000/status');
 });
+
+module.exports = app;
